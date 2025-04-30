@@ -25,7 +25,9 @@ export default function AssemblyEndgame() {
     // State values
     const [currentWord, setCurrentWord] = useState(() => getRandomWord())
     const [guessedLetters, setGuessedLetters] = useState([])
-    const [Clicked,setClicked] = useState(false)
+    const [clicked,setClicked] = useState(false)
+    const [currentStreak, setCurrentStreak] = useState(0)
+    const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('highScore')) || 0);
 
     // Derived values
     const numGuessesLeft = languages.length - 1
@@ -54,8 +56,6 @@ export default function AssemblyEndgame() {
                 [...prevLetters, letter]
         )
     }
-
-    
 
     function startNewGame() {
         setClicked(false)
@@ -157,6 +157,17 @@ export default function AssemblyEndgame() {
         setClicked(true);
     }
 
+    useEffect(()=>{
+        if (isGameWon) setCurrentStreak(prevStreak => prevStreak +1)
+        else if (isGameLost) setCurrentStreak(0)
+    },[isGameOver])
+
+    useEffect(()=>{
+        if(currentStreak > highScore){
+            setHighScore(currentStreak);
+            localStorage.setItem('highScore',currentStreak.toString());
+        }
+    },[currentStreak,highScore])
 
     return (
         <main>
@@ -169,12 +180,15 @@ export default function AssemblyEndgame() {
             }
             <header>
                 <h1>Assembly: Endgame</h1>
-                <h5>ciao</h5>
+                <section className="score-display">
+                    <div>Current Streak: {currentStreak}</div>
+                    <div>Record: {highScore}</div>
+                </section>
                 <p>Guess the word within 8 attempts to keep the
                 programming world safe from Assembly!</p>
                 {/*1 pulsante jolly. Al premere del pulsante l'AI da un consiglio su qual è la parola */}
                 <section className="suggestion-container">
-                    <button className="suggestion-button" disabled={isGameOver || Clicked} onClick={handleSuggestionClick}></button>
+                    <button className="suggestion-button" disabled={isGameOver || clicked} onClick={handleSuggestionClick}></button>
                     <p className="suggestion-text">{suggestionText}</p>
                 </section>
             </header>
