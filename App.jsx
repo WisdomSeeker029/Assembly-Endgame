@@ -16,7 +16,7 @@ import Confetti from "react-confetti"
  * ✅ Reveal what the word was if the user loses the game
  * ✅ Confetti drop when the user wins
  * ✅Add suggestions by the AI
- * Add score and record
+ * ✅Add score and record
  * 
  * Challenge: 🎊🎊🎊🎊🎊
  */
@@ -42,6 +42,7 @@ export default function AssemblyEndgame() {
     const [suggestionText, setSuggestionText] = useState('');
 
     async function getSuggestion(){
+        setSuggestionText('Loading...')
         const suggestionText = await requestSuggestion(currentWord)
         setSuggestionText(<><b>Hint: </b>{suggestionText}</>);
     }
