@@ -189,8 +189,8 @@ export default function AssemblyEndgame() {
                 programming world safe from Assembly!</p>
                 {/*1 pulsante jolly. Al premere del pulsante l'AI da un consiglio su qual è la parola */}
                 <section className="suggestion-container">
-                    <button className="suggestion-button" disabled={isGameOver || clicked} onClick={handleSuggestionClick}></button>
-                    <p className="suggestion-text">{suggestionText}</p>
+                    <button className="suggestion-button" disabled={isGameOver || clicked} onClick={handleSuggestionClick} aria-label="Request AI hint"></button>
+                    <p className="suggestion-text" aria-live="polite" role="status">{suggestionText}</p>
                 </section>
             </header>
 
